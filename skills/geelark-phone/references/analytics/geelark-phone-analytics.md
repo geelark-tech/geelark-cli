@@ -61,6 +61,10 @@ geelark-cli phone analytics accounts-list --channel 0 --account "tk_acc"
 | `items[].operator` | string | Username of the last operator |
 | `items[].created_time` | integer | Creation timestamp (seconds) |
 | `items[].updated_time` | integer | Last update timestamp (seconds) |
+| `items[].tags` | array[object] | Account tag list; empty array `[]` when no tags |
+| `items[].tags[].id` | string | Tag ID |
+| `items[].tags[].name` | string | Tag name |
+| `items[].tags[].color` | integer | Tag color index |
 
 ## add-accounts
 

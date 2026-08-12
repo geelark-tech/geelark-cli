@@ -13,6 +13,7 @@ Facebook post content with video.
 | `--video <csv>` | Comma-separated video URLs, max 10 (required) |
 | `--name <text>` | Task name (max 128 chars) |
 | `--remark <text>` | Remark (max 200 chars) |
+| `--need-share-link` | Whether to retrieve the sharing link (default false) |
 
 ## Example
 

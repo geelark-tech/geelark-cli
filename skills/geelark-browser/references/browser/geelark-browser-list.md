@@ -47,6 +47,7 @@ geelark-cli browser list --ids "id1,id2"
 | `items[].group.remark` | string | Group remark |
 | `items[].tags[]` | array | Tag list |
 | `items[].tags[].name` | string | Tag name |
+| `items[].extGroup` | string | Extension category ID (empty = team extensions) |
 | `items[].proxy` | object | Proxy info |
 | `items[].proxy.type` | string | Proxy type |
 | `items[].proxy.server` | string | Proxy server |

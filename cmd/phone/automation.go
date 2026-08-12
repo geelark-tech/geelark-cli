@@ -508,6 +508,7 @@ func newFacebookLoginCmd(newClient clientFactory) *cobra.Command {
 func newFacebookPublishCmd(newClient clientFactory) *cobra.Command {
 	var id, name, remark, title, video string
 	var scheduleAt int64
+	var needShareLink bool
 	cmd := &cobra.Command{
 		Use:     "facebook-publish",
 		Short:   "Facebook post content",
@@ -524,6 +525,9 @@ func newFacebookPublishCmd(newClient clientFactory) *cobra.Command {
 			if remark != "" {
 				body["remark"] = remark
 			}
+			if needShareLink {
+				body["needShareLink"] = true
+			}
 			result, err := c.PostAndPrint("/open/v1/rpa/task/faceBookPublish", body)
 			if err != nil {
 				return err
@@ -538,6 +542,7 @@ func newFacebookPublishCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().Int64Var(&scheduleAt, "schedule-at", 0, "Schedule time, second-level timestamp (required)")
 	cmd.Flags().StringVar(&title, "title", "", "Title (max 200 chars, required)")
 	cmd.Flags().StringVar(&video, "video", "", "Comma-separated video URLs, max 10 (required)")
+	cmd.Flags().BoolVar(&needShareLink, "need-share-link", false, "Whether to retrieve the sharing link (default false)")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
 	_ = cmd.MarkFlagRequired("title")
@@ -1148,6 +1153,7 @@ func newInstagramAiCommentCmd(newClient clientFactory) *cobra.Command {
 func newYouTubePubVideoCmd(newClient clientFactory) *cobra.Command {
 	var id, name, remark, title, description, video string
 	var scheduleAt int64
+	var isDisclosureMandatory bool
 	cmd := &cobra.Command{
 		Use:     "youtube-pub-video",
 		Short:   "YouTube publish video",
@@ -1164,6 +1170,9 @@ func newYouTubePubVideoCmd(newClient clientFactory) *cobra.Command {
 			if remark != "" {
 				body["remark"] = remark
 			}
+			if isDisclosureMandatory {
+				body["isDisclosureMandatory"] = true
+			}
 			result, err := c.PostAndPrint("/open/v1/rpa/task/youtubePubVideo", body)
 			if err != nil {
 				return err
@@ -1179,6 +1188,7 @@ func newYouTubePubVideoCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().StringVar(&title, "title", "", "Title (max 100 chars, required)")
 	cmd.Flags().StringVar(&description, "description", "", "Description (max 5000 chars, required)")
 	cmd.Flags().StringVar(&video, "video", "", "Video URL (required)")
+	cmd.Flags().BoolVar(&isDisclosureMandatory, "is-disclosure-mandatory", false, "Whether to force disclosure (default false)")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
 	_ = cmd.MarkFlagRequired("title")
@@ -2432,9 +2442,10 @@ func newTikTokMessageAsiaCmd(newClient clientFactory) *cobra.Command {
 func newTikTokHideCmd(newClient clientFactory) *cobra.Command {
 	var id, name, remark string
 	var scheduleAt int64
+	var number int
 	cmd := &cobra.Command{
 		Use:     "tiktok-hide",
-		Short:   "Hide all TikTok videos",
+		Short:   "Hide TikTok videos",
 		Example: `  geelark-cli phone automation tiktok-hide --id "557536075321468390" --schedule-at 1741846843`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := newClient()
@@ -2448,6 +2459,9 @@ func newTikTokHideCmd(newClient clientFactory) *cobra.Command {
 			if remark != "" {
 				body["remark"] = remark
 			}
+			if number > 0 {
+				body["number"] = number
+			}
 			result, err := c.PostAndPrint("/open/v1/rpa/task/tiktokHide", body)
 			if err != nil {
 				return err
@@ -2460,6 +2474,7 @@ func newTikTokHideCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().StringVar(&name, "name", "", "Task name (max 128 chars)")
 	cmd.Flags().StringVar(&remark, "remark", "", "Remark (max 200 chars)")
 	cmd.Flags().Int64Var(&scheduleAt, "schedule-at", 0, "Schedule time, second-level timestamp (required)")
+	cmd.Flags().IntVar(&number, "number", 0, "Number of videos to hide, range 0-999; 0 or unset = hide all")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
 	return cmd
@@ -2468,9 +2483,10 @@ func newTikTokHideCmd(newClient clientFactory) *cobra.Command {
 func newTikTokHideAsiaCmd(newClient clientFactory) *cobra.Command {
 	var id, name, remark string
 	var scheduleAt int64
+	var number int
 	cmd := &cobra.Command{
 		Use:     "tiktok-hide-asia",
-		Short:   "Hide all TikTok videos (Asia)",
+		Short:   "Hide TikTok videos (Asia)",
 		Example: `  geelark-cli phone automation tiktok-hide-asia --id "557536075321468390" --schedule-at 1741846843`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := newClient()
@@ -2484,6 +2500,9 @@ func newTikTokHideAsiaCmd(newClient clientFactory) *cobra.Command {
 			if remark != "" {
 				body["remark"] = remark
 			}
+			if number > 0 {
+				body["number"] = number
+			}
 			result, err := c.PostAndPrint("/open/v1/rpa/task/tiktokHideAsia", body)
 			if err != nil {
 				return err
@@ -2496,6 +2515,7 @@ func newTikTokHideAsiaCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().StringVar(&name, "name", "", "Task name (max 128 chars)")
 	cmd.Flags().StringVar(&remark, "remark", "", "Remark (max 200 chars)")
 	cmd.Flags().Int64Var(&scheduleAt, "schedule-at", 0, "Schedule time, second-level timestamp (required)")
+	cmd.Flags().IntVar(&number, "number", 0, "Number of videos to hide, range 0-999; 0 or unset = hide all")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
 	return cmd

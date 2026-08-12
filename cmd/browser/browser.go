@@ -155,7 +155,7 @@ Supports account, proxy, fingerprint, simulation settings, etc.`,
 }
 
 func newSimpleCreateCmd(newClient clientFactory) *cobra.Command {
-	var serialName, browserKernelVer string
+	var serialName, browserKernelVer, extGroup string
 	var browserOs int
 
 	cmd := &cobra.Command{
@@ -165,7 +165,7 @@ func newSimpleCreateCmd(newClient clientFactory) *cobra.Command {
 Use 'create' for full configuration via JSON.`,
 		Example: `  geelark-cli browser simple-create --serial-name "myBrowser" --browser-os 1
   geelark-cli browser simple-create --serial-name "macBrowser" --browser-os 2
-  geelark-cli browser simple-create --serial-name "myBrowser" --browser-os 1 --browser-kernel-ver "149"`,
+  geelark-cli browser simple-create --serial-name "myBrowser" --browser-os 1 --browser-kernel-ver "149" --ext-group "497548067550006541"`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := newClient()
 			if err != nil {
@@ -178,6 +178,9 @@ Use 'create' for full configuration via JSON.`,
 			if browserKernelVer != "" {
 				body["browserKernelVer"] = browserKernelVer
 			}
+			if extGroup != "" {
+				body["extGroup"] = extGroup
+			}
 			result, err := c.PostBrowserAndPrint("/api/v1/browser/create", body)
 			if err != nil {
 				return err
@@ -189,7 +192,8 @@ Use 'create' for full configuration via JSON.`,
 
 	cmd.Flags().StringVar(&serialName, "serial-name", "", "Browser environment name, max 100 chars (required)")
 	cmd.Flags().IntVar(&browserOs, "browser-os", 1, "Operating system: 1=Win, 2=Mac (required)")
-	cmd.Flags().StringVar(&browserKernelVer, "browser-kernel-ver", "", "Browser kernel version: 134,138,142,143,144,145,146,147,148,149,auto (default auto)")
+	cmd.Flags().StringVar(&browserKernelVer, "browser-kernel-ver", "", "Browser kernel version: 134,138,142,143,144,145,146,147,148,149,150,auto (default auto)")
+	cmd.Flags().StringVar(&extGroup, "ext-group", "", "Extension category ID (empty = team extensions)")
 	_ = cmd.MarkFlagRequired("serial-name")
 	_ = cmd.MarkFlagRequired("browser-os")
 	return cmd

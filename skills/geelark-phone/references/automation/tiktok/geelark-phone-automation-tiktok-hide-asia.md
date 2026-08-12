@@ -1,6 +1,6 @@
 # phone automation tiktok-hide-asia
 
-Hide all TikTok videos — Asia region.
+Hide TikTok videos — Asia region.
 
 
 ## Flags
@@ -11,6 +11,7 @@ Hide all TikTok videos — Asia region.
 | `--schedule-at <n>` | Schedule time, second-level timestamp (required) |
 | `--name <text>` | Task name (max 128 chars) |
 | `--remark <text>` | Remark (max 200 chars) |
+| `--number <n>` | Number of videos to hide, range 0-999; 0 or unset = hide all |
 
 ## Example
 

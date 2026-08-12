@@ -283,9 +283,9 @@ func newRestartCmd(newClient clientFactory) *cobra.Command {
 	var id string
 
 	cmd := &cobra.Command{
-		Use:     "restart",
-		Short:   "Restart a cloud phone",
-		Long:    "Restart a cloud phone. Ensure the cloud phone startup callback has been received before calling.",
+		Use:   "restart",
+		Short: "Restart a cloud phone",
+		Long:  "Restart a cloud phone. Ensure the cloud phone startup callback has been received before calling.",
 		Example: `  geelark-cli phone restart --id "631490227545875981"`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := newClient()

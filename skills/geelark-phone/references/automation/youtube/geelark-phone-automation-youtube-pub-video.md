@@ -14,6 +14,7 @@ YouTube publish video.
 | `--video <text>` | Video URL (required) |
 | `--name <text>` | Task name (max 128 chars) |
 | `--remark <text>` | Remark (max 200 chars) |
+| `--is-disclosure-mandatory` | Whether to force disclosure (default false) |
 
 ## Example
 

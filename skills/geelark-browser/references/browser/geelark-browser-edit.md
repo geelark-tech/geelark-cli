@@ -31,6 +31,7 @@ Update an existing browser environment configuration via JSON.
 | `proxyId` | No | string | Proxy ID |
 | `proxyConfig` | No | object | Proxy configuration (same as create) |
 | `browserStartArg` | No | string | Startup parameters |
+| `extGroup` | No | string | Extension category ID. If omitted or passed as an empty string, the team extensions will be used. |
 
 > Omitted fields will not be changed. For `simulateConfig` and `proxyConfig` structure, see [create](geelark-browser-create.md).
 
