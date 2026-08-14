@@ -31,7 +31,7 @@ Create a new browser environment with full configuration via JSON. Supports acco
 | `proxyConfig` | No | object | Proxy configuration |
 | `browserStartArg` | No | string | Startup parameters |
 | `browserKernelVer` | No | string | Browser kernel version: 134,138,142,143,144,145,146,147,148,149,150,auto (default auto) |
-| `extGroup` | No | string | Extension category ID. If omitted or passed as an empty string, the team extensions will be used. |
+| `extGroup` | No | string | Extension category ID. If omitted or empty, the team extensions will be used. Query available IDs via [`ext-group-list`](geelark-browser-ext-group-list.md). |
 
 ### SimulateConfig Fields
 

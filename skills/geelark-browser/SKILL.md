@@ -77,6 +77,7 @@ geelark-cli browser delete --ids "id1,id2"
 ## Notes
 
 - **Local API only**: Browser commands communicate with the local GeeLark client, not the cloud API
+- **Exception — `ext-group-list`**: This command uses the **cloud API** (`openapi.geelark.com`) to query team extension categories. It does not require the local client.
 - **Client must be running**: Ensure the GeeLark client is open and logged in
 - **Default endpoint**: `http://localhost:40185` (configurable via `config init --browser-base-url`)
 - **Browser must be closed** before delete and clear-cache operations

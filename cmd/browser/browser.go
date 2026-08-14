@@ -39,6 +39,7 @@ Default endpoint: http://localhost:40185 (configurable via 'config init --browse
 	cmd.AddCommand(newSetBookmarkCmd(newClient))
 	cmd.AddCommand(newGetKernelsCmd(newClient))
 	cmd.AddCommand(newUpdateKernelsCmd(newClient))
+	cmd.AddCommand(newExtGroupListCmd(newClient))
 	cmd.AddCommand(newAutomationCmd(newClient))
 
 	return cmd
@@ -655,5 +656,42 @@ func newUpdateKernelsCmd(newClient clientFactory) *cobra.Command {
 
 	cmd.Flags().StringVar(&kernelVersion, "kernel-version", "", "Browser kernel version, e.g. 143 (required)")
 	_ = cmd.MarkFlagRequired("kernel-version")
+	return cmd
+}
+
+func newExtGroupListCmd(newClient clientFactory) *cobra.Command {
+	var page, pageSize int
+
+	cmd := &cobra.Command{
+		Use:   "ext-group-list",
+		Short: "List browser extension categories",
+		Long: `Query the browser extension categories for the current team.
+Returns the available extGroup IDs that can be used when creating or editing a browser.
+
+Note: This command is not the local browser API.`,
+		Example: `  geelark-cli browser ext-group-list --page 1 --page-size 10`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := newClient()
+			if err != nil {
+				return err
+			}
+			body := map[string]interface{}{}
+			if page > 0 {
+				body["page"] = page
+			}
+			if pageSize > 0 {
+				body["pageSize"] = pageSize
+			}
+			result, err := c.PostAndPrint("/open/v1/browser/extGroup/list", body)
+			if err != nil {
+				return err
+			}
+			fmt.Println(result)
+			return nil
+		},
+	}
+
+	cmd.Flags().IntVar(&page, "page", 1, "Page number, min 1")
+	cmd.Flags().IntVar(&pageSize, "page-size", 10, "Page size, 1-100")
 	return cmd
 }
