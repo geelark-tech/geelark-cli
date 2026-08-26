@@ -41,6 +41,8 @@ These fields go in the root of the `--data` JSON object:
 | `needShareLink` | No | bool | Whether to retrieve sharing link, default false |
 | `randomUse` | No | bool | Whether to browse randomly before posting, default false |
 | `browseTime` | No | integer | Random browsing time in minutes, required when `randomUse` is true, 1-20 |
+| `gameName` | No | string | Game name, max 256 chars |
+| `location` | No | string | Location, max 500 chars |
 
 Example:
 
@@ -55,7 +57,9 @@ Example:
     "videoDesc": "My video description",
     "maxTryTimes": 3,
     "timeoutMin": 80,
-    "needShareLink": true
+    "needShareLink": true,
+    "gameName": "game",
+    "location": "1600 Pennsylvania Avenue NW, Washington, DC 20500, USA"
   }]
 }
 ```

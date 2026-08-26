@@ -117,6 +117,7 @@ All automation task creation commands require:
 - [tiktok-message](tiktok/geelark-phone-automation-tiktok-message.md) / [tiktok-message-asia](tiktok/geelark-phone-automation-tiktok-message-asia.md)
 - [tiktok-hide](tiktok/geelark-phone-automation-tiktok-hide.md) / [tiktok-hide-asia](tiktok/geelark-phone-automation-tiktok-hide-asia.md)
 - [tiktok-delete](tiktok/geelark-phone-automation-tiktok-delete.md) / [tiktok-delete-asia](tiktok/geelark-phone-automation-tiktok-delete-asia.md)
+- [tiktok-delete-comment](tiktok/geelark-phone-automation-tiktok-delete-comment.md) / [tiktok-delete-comment-asia](tiktok/geelark-phone-automation-tiktok-delete-comment-asia.md)
 
 ### Facebook
 - [facebook-login](facebook/geelark-phone-automation-facebook-login.md)

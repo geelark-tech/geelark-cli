@@ -41,6 +41,8 @@ Includes task management, custom tasks, and platform-specific automation
 	cmd.AddCommand(newTikTokHideAsiaCmd(newClient))
 	cmd.AddCommand(newTikTokDeleteCmd(newClient))
 	cmd.AddCommand(newTikTokDeleteAsiaCmd(newClient))
+	cmd.AddCommand(newTikTokDeleteCommentCmd(newClient))
+	cmd.AddCommand(newTikTokDeleteCommentAsiaCmd(newClient))
 	cmd.AddCommand(newFacebookLoginCmd(newClient))
 	cmd.AddCommand(newFacebookPublishCmd(newClient))
 	cmd.AddCommand(newFacebookAutoCommentCmd(newClient))
@@ -2110,7 +2112,7 @@ func newTikTokStarAsiaCmd(newClient clientFactory) *cobra.Command {
 }
 
 func newTikTokCommentCmd(newClient clientFactory) *cobra.Command {
-	var id, name, remark, comment string
+	var id, name, remark, comment, imageUrl string
 	var scheduleAt int64
 	var useAi, commentProbability int
 	var links, searchKeywords string
@@ -2143,6 +2145,9 @@ func newTikTokCommentCmd(newClient clientFactory) *cobra.Command {
 			if likeVideo {
 				body["likeVideo"] = true
 			}
+			if imageUrl != "" {
+				body["imageUrl"] = imageUrl
+			}
 			result, err := c.PostAndPrint("/open/v1/rpa/task/tiktokRandomComment", body)
 			if err != nil {
 				return err
@@ -2161,6 +2166,7 @@ func newTikTokCommentCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().IntVar(&commentProbability, "comment-probability", 0, "Comment probability, 0-100, default 30")
 	cmd.Flags().StringVar(&searchKeywords, "search-keywords", "", "Comma-separated search keywords")
 	cmd.Flags().BoolVar(&likeVideo, "like-video", false, "Whether to like, defaults to false")
+	cmd.Flags().StringVar(&imageUrl, "image-url", "", "Comment image URL, max 500 chars (effective when use-ai=2)")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
 	_ = cmd.MarkFlagRequired("use-ai")
@@ -2168,7 +2174,7 @@ func newTikTokCommentCmd(newClient clientFactory) *cobra.Command {
 }
 
 func newTikTokCommentAsiaCmd(newClient clientFactory) *cobra.Command {
-	var id, name, remark, comment string
+	var id, name, remark, comment, imageUrl string
 	var scheduleAt int64
 	var useAi, commentProbability int
 	var links, searchKeywords string
@@ -2201,6 +2207,9 @@ func newTikTokCommentAsiaCmd(newClient clientFactory) *cobra.Command {
 			if likeVideo {
 				body["likeVideo"] = true
 			}
+			if imageUrl != "" {
+				body["imageUrl"] = imageUrl
+			}
 			result, err := c.PostAndPrint("/open/v1/rpa/task/tiktokRandomCommentAsia", body)
 			if err != nil {
 				return err
@@ -2219,6 +2228,7 @@ func newTikTokCommentAsiaCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().IntVar(&commentProbability, "comment-probability", 0, "Comment probability, 0-100, default 30")
 	cmd.Flags().StringVar(&searchKeywords, "search-keywords", "", "Comma-separated search keywords")
 	cmd.Flags().BoolVar(&likeVideo, "like-video", false, "Whether to like, defaults to false")
+	cmd.Flags().StringVar(&imageUrl, "image-url", "", "Comment image URL, max 500 chars (effective when use-ai=2)")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
 	_ = cmd.MarkFlagRequired("use-ai")
@@ -2590,5 +2600,81 @@ func newTikTokDeleteAsiaCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().Int64Var(&scheduleAt, "schedule-at", 0, "Schedule time, second-level timestamp (required)")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
+	return cmd
+}
+
+func newTikTokDeleteCommentCmd(newClient clientFactory) *cobra.Command {
+	var id, name, remark, keywords string
+	var scheduleAt int64
+	cmd := &cobra.Command{
+		Use:     "tiktok-delete-comment",
+		Short:   "Delete TikTok comments",
+		Example: `  geelark-cli phone automation tiktok-delete-comment --id "557536075321468390" --schedule-at 1741846843 --keywords "hello,world"`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := newClient()
+			if err != nil {
+				return err
+			}
+			body := map[string]interface{}{"id": id, "scheduleAt": scheduleAt, "keywords": strings.Split(keywords, ",")}
+			if name != "" {
+				body["name"] = name
+			}
+			if remark != "" {
+				body["remark"] = remark
+			}
+			result, err := c.PostAndPrint("/open/v1/rpa/task/tiktokDeleteComment", body)
+			if err != nil {
+				return err
+			}
+			fmt.Println(result)
+			return nil
+		},
+	}
+	cmd.Flags().StringVar(&id, "id", "", "Cloud phone ID (required)")
+	cmd.Flags().StringVar(&name, "name", "", "Task name (max 32 chars)")
+	cmd.Flags().StringVar(&remark, "remark", "", "Remark (max 200 chars)")
+	cmd.Flags().Int64Var(&scheduleAt, "schedule-at", 0, "Schedule time, second-level timestamp (required)")
+	cmd.Flags().StringVar(&keywords, "keywords", "", "Comma-separated keywords, max 100 items, 100 chars each (required)")
+	_ = cmd.MarkFlagRequired("id")
+	_ = cmd.MarkFlagRequired("schedule-at")
+	_ = cmd.MarkFlagRequired("keywords")
+	return cmd
+}
+
+func newTikTokDeleteCommentAsiaCmd(newClient clientFactory) *cobra.Command {
+	var id, name, remark, keywords string
+	var scheduleAt int64
+	cmd := &cobra.Command{
+		Use:     "tiktok-delete-comment-asia",
+		Short:   "Delete TikTok comments (Asia)",
+		Example: `  geelark-cli phone automation tiktok-delete-comment-asia --id "557536075321468390" --schedule-at 1741846843 --keywords "hello,world"`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := newClient()
+			if err != nil {
+				return err
+			}
+			body := map[string]interface{}{"id": id, "scheduleAt": scheduleAt, "keywords": strings.Split(keywords, ",")}
+			if name != "" {
+				body["name"] = name
+			}
+			if remark != "" {
+				body["remark"] = remark
+			}
+			result, err := c.PostAndPrint("/open/v1/rpa/task/tiktokDeleteCommentAsia", body)
+			if err != nil {
+				return err
+			}
+			fmt.Println(result)
+			return nil
+		},
+	}
+	cmd.Flags().StringVar(&id, "id", "", "Cloud phone ID (required)")
+	cmd.Flags().StringVar(&name, "name", "", "Task name (max 32 chars)")
+	cmd.Flags().StringVar(&remark, "remark", "", "Remark (max 200 chars)")
+	cmd.Flags().Int64Var(&scheduleAt, "schedule-at", 0, "Schedule time, second-level timestamp (required)")
+	cmd.Flags().StringVar(&keywords, "keywords", "", "Comma-separated keywords, max 100 items, 100 chars each (required)")
+	_ = cmd.MarkFlagRequired("id")
+	_ = cmd.MarkFlagRequired("schedule-at")
+	_ = cmd.MarkFlagRequired("keywords")
 	return cmd
 }
