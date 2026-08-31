@@ -79,6 +79,7 @@ geelark-cli phone <command> [flags]
 | Clone a phone | [`clone`](references/phone/geelark-phone-clone.md) |
 | Reset phone identity | [`new-one`](references/phone/geelark-phone-new-one.md) |
 | Take a screenshot | [`screenshot`](references/phone/geelark-phone-screenshot.md) + [`screenshot-result`](references/phone/geelark-phone-screenshot-result.md) |
+| Live stream a video | [`video-push`](references/phone/geelark-phone-video-push.md) / [`video-push-stop`](references/phone/geelark-phone-video-push-stop.md) / [`video-push-result`](references/phone/geelark-phone-video-push-result.md) |
 | Set GPS | [`set-gps`](references/phone/geelark-phone-set-gps.md) |
 | Get GPS | [`get-gps`](references/phone/geelark-phone-get-gps.md) |
 | Execute shell | [`shell exec`](references/shell/geelark-phone-shell-exec.md) |

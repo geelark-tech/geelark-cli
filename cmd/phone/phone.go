@@ -47,6 +47,9 @@ func NewCmd(newClient clientFactory) *cobra.Command {
 	cmd.AddCommand(newImportContactsResultCmd(newClient))
 	cmd.AddCommand(newNetConfigGetCmd(newClient))
 	cmd.AddCommand(newNetConfigSetCmd(newClient))
+	cmd.AddCommand(newVideoPushCmd(newClient))
+	cmd.AddCommand(newVideoPushStopCmd(newClient))
+	cmd.AddCommand(newVideoPushResultCmd(newClient))
 	cmd.AddCommand(newSimpleCreateCmd(newClient))
 	cmd.AddCommand(newAutomationCmd(newClient))
 	cmd.AddCommand(newLibraryCmd(newClient))
@@ -283,9 +286,9 @@ func newRestartCmd(newClient clientFactory) *cobra.Command {
 	var id string
 
 	cmd := &cobra.Command{
-		Use:   "restart",
-		Short: "Restart a cloud phone",
-		Long:  "Restart a cloud phone. Ensure the cloud phone startup callback has been received before calling.",
+		Use:     "restart",
+		Short:   "Restart a cloud phone",
+		Long:    "Restart a cloud phone. Ensure the cloud phone startup callback has been received before calling.",
 		Example: `  geelark-cli phone restart --id "631490227545875981"`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := newClient()
@@ -308,6 +311,113 @@ func newRestartCmd(newClient clientFactory) *cobra.Command {
 
 	cmd.Flags().StringVar(&id, "id", "", "Cloud phone ID (required)")
 	_ = cmd.MarkFlagRequired("id")
+
+	return cmd
+}
+
+func newVideoPushCmd(newClient clientFactory) *cobra.Command {
+	var id, fileURL string
+	var isLoop int
+
+	cmd := &cobra.Command{
+		Use:   "video-push",
+		Short: "Upload a video and start live streaming push",
+		Long: `Upload a video file to a cloud phone and start live streaming push. MP4 format is recommended.
+Only supported on Android 12/13/14/15/16 devices.`,
+		Example: `  geelark-cli phone video-push --id "628708996374619612" --file-url "https://material.geelark.com/open-upload/xxx.mp4" --is-loop 1`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := newClient()
+			if err != nil {
+				return err
+			}
+
+			body := map[string]interface{}{
+				"id":      id,
+				"fileUrl": fileURL,
+				"isLoop":  isLoop,
+			}
+
+			result, err := c.PostAndPrint("/open/v1/phone/videoPush/upload", body)
+			if err != nil {
+				return err
+			}
+			fmt.Println(result)
+			return nil
+		},
+	}
+
+	cmd.Flags().StringVar(&id, "id", "", "Cloud phone ID (required)")
+	cmd.Flags().StringVar(&fileURL, "file-url", "", "Video file URL, MP4 recommended (required)")
+	cmd.Flags().IntVar(&isLoop, "is-loop", 0, "Whether to loop the stream: 1=yes, 0=no (required)")
+	_ = cmd.MarkFlagRequired("id")
+	_ = cmd.MarkFlagRequired("file-url")
+	_ = cmd.MarkFlagRequired("is-loop")
+
+	return cmd
+}
+
+func newVideoPushStopCmd(newClient clientFactory) *cobra.Command {
+	var id string
+
+	cmd := &cobra.Command{
+		Use:     "video-push-stop",
+		Short:   "Stop live streaming push",
+		Long:    "Stop the ongoing live streaming push on a cloud phone.",
+		Example: `  geelark-cli phone video-push-stop --id "628708996374619612"`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := newClient()
+			if err != nil {
+				return err
+			}
+
+			body := map[string]interface{}{
+				"id": id,
+			}
+
+			result, err := c.PostAndPrint("/open/v1/phone/videoPush/stop", body)
+			if err != nil {
+				return err
+			}
+			fmt.Println(result)
+			return nil
+		},
+	}
+
+	cmd.Flags().StringVar(&id, "id", "", "Cloud phone ID (required)")
+	_ = cmd.MarkFlagRequired("id")
+
+	return cmd
+}
+
+func newVideoPushResultCmd(newClient clientFactory) *cobra.Command {
+	var taskID string
+
+	cmd := &cobra.Command{
+		Use:     "video-push-result",
+		Short:   "Get live streaming push task result",
+		Long:    "Query the execution result of a video push task.",
+		Example: `  geelark-cli phone video-push-result --task-id "2093234110406909952"`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := newClient()
+			if err != nil {
+				return err
+			}
+
+			body := map[string]interface{}{
+				"id": taskID,
+			}
+
+			result, err := c.PostAndPrint("/open/v1/phone/videoPush/upload/result", body)
+			if err != nil {
+				return err
+			}
+			fmt.Println(result)
+			return nil
+		},
+	}
+
+	cmd.Flags().StringVar(&taskID, "task-id", "", "Push task ID returned by video-push (required)")
+	_ = cmd.MarkFlagRequired("task-id")
 
 	return cmd
 }
