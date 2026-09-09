@@ -1434,7 +1434,7 @@ func newRedditWarmupCmd(newClient clientFactory) *cobra.Command {
 }
 
 func newRedditVideoCmd(newClient clientFactory) *cobra.Command {
-	var id, name, remark, title, description, video, community string
+	var id, name, remark, title, description, video, community, flair string
 	var scheduleAt int64
 	cmd := &cobra.Command{
 		Use:     "reddit-video",
@@ -1455,6 +1455,9 @@ func newRedditVideoCmd(newClient clientFactory) *cobra.Command {
 			if description != "" {
 				body["description"] = description
 			}
+			if flair != "" {
+				body["flair"] = flair
+			}
 			result, err := c.PostAndPrint("/open/v1/rpa/task/redditVideo", body)
 			if err != nil {
 				return err
@@ -1471,6 +1474,7 @@ func newRedditVideoCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().StringVar(&description, "description", "", "Description")
 	cmd.Flags().StringVar(&video, "video", "", "Comma-separated video URLs (required)")
 	cmd.Flags().StringVar(&community, "community", "", "Community (required)")
+	cmd.Flags().StringVar(&flair, "flair", "", "Flair tag, max 100 chars")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
 	_ = cmd.MarkFlagRequired("title")
@@ -1480,7 +1484,7 @@ func newRedditVideoCmd(newClient clientFactory) *cobra.Command {
 }
 
 func newRedditImageCmd(newClient clientFactory) *cobra.Command {
-	var id, name, remark, title, description, images, community string
+	var id, name, remark, title, description, images, community, flair string
 	var scheduleAt int64
 	cmd := &cobra.Command{
 		Use:     "reddit-image",
@@ -1501,6 +1505,9 @@ func newRedditImageCmd(newClient clientFactory) *cobra.Command {
 			if description != "" {
 				body["description"] = description
 			}
+			if flair != "" {
+				body["flair"] = flair
+			}
 			result, err := c.PostAndPrint("/open/v1/rpa/task/redditImage", body)
 			if err != nil {
 				return err
@@ -1517,6 +1524,7 @@ func newRedditImageCmd(newClient clientFactory) *cobra.Command {
 	cmd.Flags().StringVar(&description, "description", "", "Description")
 	cmd.Flags().StringVar(&images, "images", "", "Comma-separated image URLs (required)")
 	cmd.Flags().StringVar(&community, "community", "", "Community (required)")
+	cmd.Flags().StringVar(&flair, "flair", "", "Flair tag, max 100 chars")
 	_ = cmd.MarkFlagRequired("id")
 	_ = cmd.MarkFlagRequired("schedule-at")
 	_ = cmd.MarkFlagRequired("title")

@@ -43,6 +43,7 @@ These fields go in the root of the `--data` JSON object:
 | `browseTime` | No | integer | Random browsing time in minutes, required when `randomUse` is true, 1-20 |
 | `gameName` | No | string | Game name, max 256 chars |
 | `location` | No | string | Location, max 500 chars |
+| `index` | No | integer | Product selection index when multiple products share the same name, 1-100; 0 or unset = first product |
 
 Example:
 
@@ -114,6 +115,7 @@ Example:
 | `randomUse` | No | bool | Whether to browse randomly before posting, default false |
 | `browseTime` | No | integer | Random browsing time in minutes, required when `randomUse` is true, 1-20 |
 | `randomBgm` | No | bool | Randomly match background music, default false |
+| `index` | No | integer | Product selection index when multiple products share the same name, 1-100; 0 or unset = first product |
 
 Example:
 

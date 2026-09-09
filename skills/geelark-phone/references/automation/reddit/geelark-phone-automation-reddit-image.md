@@ -12,6 +12,7 @@ Publish pictures and texts on Reddit.
 | `--title <text>` | Title (required) |
 | `--images <csv>` | Comma-separated image URLs (required) |
 | `--community <text>` | Community (required) |
+| `--flair <text>` | Flair tag, max 100 chars |
 | `--description <text>` | Description |
 | `--name <text>` | Task name (max 128 chars) |
 | `--remark <text>` | Remark (max 200 chars) |

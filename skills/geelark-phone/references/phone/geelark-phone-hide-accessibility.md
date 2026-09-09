@@ -1,13 +1,13 @@
 # phone hide-accessibility
 
-Hide the cloud phone accessibility service from specified apps. Supports Android 12/13/14/15. Overwrites previous configuration.
+Hide the cloud phone accessibility service from specified apps. Supports Android 12/13/14/15/16. Overwrites previous configuration.
 
 ## Key Flags
 
 | Flag | Description |
 |------|-------------|
 | `--ids <csv>` | Cloud phone IDs (required) |
-| `--pkg-name <csv>` | App package names (required). On Android 14, pass the app's own package name. On Android 12/13/15, pass the package name of the app you want to hide from (e.g. com.zhiliaoapp.musically for TikTok). |
+| `--pkg-name <csv>` | App package names (required). On Android 14/16, pass the app's own package name. On Android 12/13/15, pass the package name of the app you want to hide from (e.g. com.zhiliaoapp.musically for TikTok). |
 
 ## Examples
 
